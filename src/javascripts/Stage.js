@@ -3,6 +3,7 @@ import FloorObject from './threeObjects/FloorObject.js';
 import WallObject from './threeObjects/WallObject.js';
 import ImageObject from './threeObjects/ImageObject.js';
 import FairyObject from './threeObjects/FairyObject.js';
+import ButterflyObject from './threeObjects/ButterflyObject.js';
 import Music from './threeObjects/Music.js';
 import * as THREE from 'three';
 
@@ -15,7 +16,7 @@ var aspect;
 var renderer;
 var camera;
 var musicObjects=[];
-var fairyobject;
+var butterflyobject;
 var rendercnt=0;
 var group;
 
@@ -120,12 +121,6 @@ export function createStage(){
 	//////以下からオブジェクト追加
 
 
-	//  if ( group == null ) {
- // 		group = new THREE.Object3D();
-	// 	scene3.add(group);
-	// }
-
-
 	// //jasonテスト
 	// //オブジェクト
 	// var pathLength=40;//道幅
@@ -178,7 +173,7 @@ export function createStage(){
 
 
 
-	musicObjects.push(new Music(-40,0,0,"../sounds/sample3.mp3",[width,height,depth]));
+	musicObjects.push(new Music(-40,0,-50,"../sounds/sample3.mp3",[width,height,depth]));
 	musicObjects[0].setlistererPos(camera.position.x,camera.position.y,camera.position.z);
 	scene.add(musicObjects[0].getObject()); // シーンに追加
 
@@ -192,11 +187,14 @@ export function createStage(){
 	var wallobject = new WallObject();
 	scene.add(wallobject.getObject()); // シーンに追加
 
+	// //妖精オブジェクト
+	// fairyobject = new FairyObject();
+	// fairyobject.setPositionXZ(camera.position.x,camera.position.z,musicObjects[0].x,musicObjects[0].z);
+	// scene3.add(fairyobject.getObject()); // シーンに追加
 	//妖精オブジェクト
-	fairyobject = new FairyObject();
-	fairyobject.setPositionXZ(camera.position.x,camera.position.z,musicObjects[0].x,musicObjects[0].z);
-	// fairyobject.setPositionXZ(camera.position.x-2,camera.position.y,camera.position.z-5);
-	scene3.add(fairyobject.getObject()); // シーンに追加
+	butterflyobject = new ButterflyObject();
+	butterflyobject.setPositionXZ(camera.position.x,camera.position.z,musicObjects[0].x,musicObjects[0].z);
+	scene3.add(butterflyobject.getObject()); // シーンに追加
 }
 //
 
@@ -205,7 +203,7 @@ export function createStage(){
 export function render() {
   // シーンとカメラを渡してレンダリング
   rendercnt+=0.025;
-  fairyobject.setY(Math.sin(rendercnt*Math.PI/2));
+  butterflyobject.wing();
   requestAnimationFrame(render);
   renderer.render(scene, camera);
   renderer2.render(scene2, camera);
@@ -225,26 +223,15 @@ export function cameraMove(x,y,z){
 	for(var i=0;i<musicObjects.length;i++){
 		musicObjects[i].setlistererPos(camera.position.x,camera.position.y,camera.position.z);
 	}
-	// var dis=Math.sqrt((camera.position.x-musicObjects[0].x)*(camera.position.x-musicObjects[0].x) + (camera.position.z-musicObjects[0].z) * (camera.position.z - musicObjects[0].z));
 
-
-	// console.log("musicObjects x:" + musicObjects[0].x + ",z:" + musicObjects[0].z);
-	// console.log("listener x:" + camera.position.x + ",z:" + camera.position.z);
-
-	// var fairyX=camera.position.x + 5*Math.abs(camera.position.x-musicObjects[0].x)/dis;
-	// var fairyZ=camera.position.z - 5*Math.abs(camera.position.z-musicObjects[0].z)/dis;
-
-	// console.log("fairy x:" + fairyX + ",z:" + fairyZ + ",dis:" + dis);
-
-	// fairyobject.setX(fairyX);
-	// fairyobject.setZ(fairyZ);
-	fairyobject.setPositionXZ(camera.position.x,camera.position.z,musicObjects[0].x,musicObjects[0].z);
+	butterflyobject.setPositionXZ(camera.position.x,camera.position.z,musicObjects[0].x,musicObjects[0].z);
 
 }
 
 export function cameraRotation(ry){
 	camera.rotation.y+=ry;
-	fairyobject.setRotationY(ry*5);//現時点なんかへん。
+	butterflyobject.setRotationY(ry);
+	// fairyobject.setRotationY(ry*5);//現時点なんかへん。
 
 }
 

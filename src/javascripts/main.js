@@ -23,14 +23,15 @@ document.onkeydown = function (e){
 	}else if(e.keyCode == 68){//D key
 		cameraMove(+1,0,0);
 		// cameraRotation(-0.1);
-	}else if(e.keyCode == 90){//Z key
-		// up2gain();
-		// cameraMove(-1,0,0);
-		cameraRotation(+0.1);
-	}else if(e.keyCode == 88){//X key
-		// cameraMove(+1,0,0);
-		cameraRotation(-0.1);
 	}
+	// else if(e.keyCode == 90){//Z key
+	// 	// up2gain();
+	// 	// cameraMove(-1,0,0);
+	// 	cameraRotation(+0.1);
+	// }else if(e.keyCode == 88){//X key
+	// 	// cameraMove(+1,0,0);
+	// 	cameraRotation(-0.1);
+	// }
 
 };
 
