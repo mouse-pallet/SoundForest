@@ -33,7 +33,9 @@ class InformationObjct{
 		this.artistName.nodeValue = info.ArtistName;		
 		this.title.nodeValue = info.Title;
 		this.smallDesc.nodeValue = info.SmallDesc;	
-		this.bigDesc.nodeValue = info.bigDesc;	
+		this.bigDesc.nodeValue = info.BigDesc;
+		// console.log("bigDesc"+info.SmaDesc);
+		// console.log("bigDesc"+info.bigDesc);	
 	}
 
 	getImgurl(){

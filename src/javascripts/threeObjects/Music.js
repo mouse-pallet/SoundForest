@@ -20,40 +20,16 @@ class Music extends PlaneObject{
         		this.listener = this.audioCtx.listener;
             this.panner.setPosition(posX/this.width,posY/this.height,posZ/this.depth);//音源の位置を設定
             this.gainNode = this.audioCtx.createGain();//音量調整
-            // this.analyser = this.audioCtx.createAnalyser();//音声解析
-            // this.analyser.fftSize = 512;
-            // this.bufferLength = this.analyser.frequencyBinCount;
-            // this.frequency = new Uint8Array(this.bufferLength);
-            // this.visualizar = new THREE.Object3D();
-
-            // this.p1 = 0;
-            // this.pointgeometry;
-            // this.pointmaterial;
-            // this.pointmesh;
-
-            
-            // console.log("info:"+t);
+           
 
       }
-
-      setName(name){
-        console.log("setName"+this.musicObject);
-        // this.musicObject.name=name;
-      }
-
 
 
       setInformation(artistName,title,smallDesc,bigDesc,url,img){
         this.info={ArtistName:artistName,Title:title,SmallDesc:smallDesc,BigDesc:bigDesc,URL:url,Image:img};
-
-        // this.info.setInformation(artistName,title,smallDesc,bigDesc,url,img);
-         console.log("info:"+this.info.ArtistName);
       }
 
       getInformation(){
-        // this.info={ArtistName:artistName,Title:title,SmallDesc:smallDesc,BigDesc:bigDesc,URL:url}
-
-        // this.info.setInformation(artistName,title,smallDesc,bigDesc,url,img);
          return this.info;
       }
 
@@ -121,56 +97,6 @@ class Music extends PlaneObject{
 
       }
 
-      // updateAnalyze(){
-      //     this.analyser.getByteFrequencyData(this.frequency);
-      //     var i = 0;
-      //     var x, y, z;
-      //     var colors = [];
-      //     for (i = 0; i < this.bufferLength; i++){
-      //         colors[i] = new THREE.Color();
-      //         x = this.x+(11*Math.sin(i*Math.PI*2/this.bufferLength));
-      //         y = this.frequency[i]-128;
-      //         z = this.z+(11*Math.cos(i*Math.PI*2/this.bufferLength));
-      //         this.pointgeometry.vertices.push( new THREE.Vector3( x, y, z ) );
-      //         colors[i].setHSL( (this.frequency[i]-128) / 128, 1.0, 0.5 );
-      //     }
-      // }
-
-
-      // analyzeSound(){
-      //   // console.log("analyzeSound");
-
-      //     this.analyser.getByteFrequencyData(this.frequency);
-
-
-      //     this.pointgeometry = new THREE.Geometry();
-      //     this.pointgeometry.verticesNeedUpdate=true;
-      //     var x, y, z;
-      //     this.p1 += (Math.PI*2 * 10 / 360);
-      //     var i = 0;
-      //     var colors = [];
-      //     for (i = 0; i < this.bufferLength; i++){
-      //         colors[i] = new THREE.Color();
-      //         x = this.x+(11*Math.sin(i*Math.PI*2/this.bufferLength));
-      //         y = this.frequency[i]-128;
-      //         z = this.z+(11*Math.cos(i*Math.PI*2/this.bufferLength));
-      //         this.pointgeometry.vertices.push( new THREE.Vector3( x, y, z ) );
-      //         colors[i].setHSL( (this.frequency[i]-128) / 128, 1.0, 0.5 );
-      //     }
-
-      //     this.pointgeometry.colors = colors;
-      //     this.pointmaterial = new THREE.PointCloudMaterial( {
-      //         size: 1,
-      //         map: this.map,
-      //         transparent: true,
-      //         opacity: 0.7,
-      //         depthTest: false,
-      //         vertexColors: true
-      //     } );
-      //     // scene.remove(mesh);
-      //     this.pointmesh = new THREE.PointCloud(this.pointgeometry, this.pointmaterial);
-      //     return this.pointmesh;
-      // }
 
       getDistance(){
             var lx=this.listener.positionX.value;
