@@ -167,7 +167,7 @@ export function createStage(){
 	var spaceXYZ=[width,height,depth];//今後オブジェクト生成に使う空間のベクトル
 	musicObjects.push(new Music(-80,0,-50,"../sounds/Aimer/darekaumiwo.mp3",spaceXYZ));
 	// setInformation(artistName,title,smallDesc,bigDesc,url,img);
-	musicObjects[0].setInformation("Aimer","誰か、海を","smallhoge","bighoge","urlhoge",'https://images-na.ssl-images-amazon.com/images/I/51Q7vL967kL.jpg')
+	musicObjects[0].setInformation("Aimer","誰か、海を","smallhoge","bighoge","https://www.amazon.co.jp/%E8%AA%B0%E3%81%8B%E3%80%81%E6%B5%B7%E3%82%92%E3%80%82EP-Aimer/dp/B00LL7N5X0/ref=sr_1_1?ie=UTF8&qid=1473739590&sr=8-1&keywords=%E8%AA%B0%E3%81%8B+%E6%B5%B7%E3%82%92",'https://images-na.ssl-images-amazon.com/images/I/51Q7vL967kL.jpg')
 	musicObjects[0].setlistererPos(camera.position.x,camera.position.y,camera.position.z);
 	musicObjects[0].name = musicObjects[0].getInformation().Title;;
 	scene.add(musicObjects[0].setObject()); // シーンに追加
@@ -180,7 +180,7 @@ export function createStage(){
 
 	musicObjects.push(new Music(0,0,0,"../sounds/sample3.mp3",spaceXYZ));
 	// setInformation(artistName,title,smallDesc,bigDesc,url,img);
-	musicObjects[1].setInformation("Hoge","Sample3","smallhoge","bighoge","urlhogehoge",'https://images-na.ssl-images-amazon.com/images/I/51FJYQN64VL.jpg')
+	musicObjects[1].setInformation("Hoge","Sample3","smallhoge","bighoge","https://www.amazon.co.jp/%E3%82%A2%E3%82%A4%E3%82%BD%E3%83%88%E3%83%8B%E3%83%83%E3%82%AF%E3%83%BB%E3%82%B5%E3%82%A6%E3%83%B3%E3%83%89-Forest%E2%80%BE%E6%A3%AE-%E5%85%89%E6%B0%B7%E6%AB%93/dp/B00005F1O2/ref=sr_1_3?ie=UTF8&qid=1473738055&sr=8-3&keywords=%E3%80%80%E6%A3%AE%E3%80%80%E3%83%92%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0",'https://images-na.ssl-images-amazon.com/images/I/51FJYQN64VL.jpg')
 	musicObjects[1].setlistererPos(camera.position.x,camera.position.y,camera.position.z);
 	musicObjects[1].createObject();
 	scene.add(musicObjects[1].setObject()); // シーンに追加
@@ -298,6 +298,7 @@ export function clickPosition(event){
 		for(var j =0; j < musicObjects.length;j++)
 		if(musicObjects[j].getObject()==intersects[i].object){
 			console.log("click["+j+"]:"+musicObjects[j].getInformation().URL);
+			window.open(musicObjects[j].getInformation().URL,'_blank');
 		}
 	}
 	 
