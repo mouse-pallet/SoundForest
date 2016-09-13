@@ -37,6 +37,7 @@ module.exports = {
   'copy': [
     '**/*.ico',
     src+'sounds/*.mp3',
+    src+'sounds/Aimer/*.mp3',
     src+'images/*.jpg',
     src+'model/*.json'
   ]

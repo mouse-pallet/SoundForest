@@ -53,8 +53,9 @@ class ButterflyObject{
 	        this.butterfly.add(this.wingR);
 
 
-
-	        this.butterfly.rotation.x = 40* (Math.PI / 180);
+	        this.butterfly.rotation.y = 180* (Math.PI / 180);
+	        this.butterfly.rotation.x = 60* (Math.PI / 180);
+	        // this.butterfly.rotation.y = 90* (Math.PI / 180);
 
 
 	}
@@ -114,6 +115,39 @@ class ButterflyObject{
 
 	setRotationY(ry){
 		this.butterfly.rotation.y = ry;
+	}
+
+	// * @param {THREE.Vector3} objPos 開始点
+	//  * @param {THREE.Vector3} lisPos 終了点
+	setRotation(objPos,lisPos){//オブジェクトとリスナーの位置(カメラの位置)から回転角度を取得
+		var objVec = objPos.clone();
+		var lisVec = lisPos.clone();
+		var pVec = new THREE.Vector3(objPos.x,0,0);//objのxベクトル
+		var pobjVec = new THREE.Vector3();//pVec-objVec
+		var lisobjVec = new THREE.Vector3();//lisVec-objVec
+
+		// console.log(objPos);
+		// console.log(objVec);
+		pobjVec = pobjVec.subVectors(pVec,objVec);
+		lisobjVec= lisobjVec.subVectors(lisVec,objVec);
+		// console.log(pobjVec);
+
+		// // ２つのベクトルの回転軸
+		// var axis = objVec.clone().cross(lisVec);
+		// // 軸ベクトルを単位ベクトルに
+		// axis.normalize();
+
+		// ２つのベクトルのなす角度
+		var angle = pobjVec.angleTo(lisobjVec);
+		
+		if(objPos.x>lisPos.x){
+			this.butterfly.rotation.y = angle;
+			// console.log("angle:"+(angle*180/(Math.PI)));
+		}else{
+			this.butterfly.rotation.y = -angle;
+			// console.log("angle:"+(-angle*180/(Math.PI)));
+		}
+
 	}
 
 }

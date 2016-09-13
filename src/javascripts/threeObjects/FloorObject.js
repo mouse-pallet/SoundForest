@@ -3,16 +3,15 @@ import PlaneObject from './PlaneObject.js';
 
 class FloorObject　extends PlaneObject{
 
-	constructor(posX,posY,posZ){
-		super(posX,posY,posZ);
+	constructor(posX,posY,posZ,spaceXYZ,width,height,rateX,rateY,img){
+		super(posX,posY,posZ,spaceXYZ);
 
 		this.loader = new THREE.TextureLoader();
-		this.map = this.loader.load( '../../images/green.jpg');
+		this.map = this.loader.load( img);
 		this.map.wrapS = this.map.wrapT = THREE.RepeatWrapping;
-		console.log(this.map);
-		this.map.repeat.set( 20, 20 );
+		this.map.repeat.set(rateX,rateY);
 
-		this.geometry = new THREE.PlaneGeometry( 800, 1200, 1, 1 );
+		this.geometry = new THREE.PlaneGeometry( width, height, 1, 1 );
 		this.material = new THREE.MeshPhongMaterial( { map: this.map,bumpMap:this.map, bumpScale: 100} )
 		// メッシュの作成
 		this.floor = new THREE.Mesh(this.geometry, this.material);
@@ -22,8 +21,8 @@ class FloorObject　extends PlaneObject{
 	}
 
 
-	getObject(){
-		this.floor.position.set(0,-10,-20);
+	getObject(x,y,z){
+		this.floor.position.set(x,y,z);
 		return this.floor;
 	}
 }

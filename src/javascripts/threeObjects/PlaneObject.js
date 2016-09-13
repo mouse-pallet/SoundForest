@@ -7,15 +7,11 @@ class PlaneObject{
 		this.y = posY;
 		this.z = posZ;
 
+		// //空間設定
+	    	this.width = (spaceXYZ[0])/2;//画面幅
+	    	this.height = spaceXYZ[1]/2;//画面高さ
+	    	this.depth = spaceXYZ[2]/2;
 
-		//空間設定
-    	// this.width = spaceXYZ[0]/2;//画面幅
-    	// this.height = spaceXYZ[1]/2;//画面高さ
-    	// this.depth = spaceXYZ[2]/2;
-
-    	this.width = 300;//画面幅
-    	this.height = 300;//画面高さ
-    	this.depth = 300;
 	}
 
 	createObject(){
@@ -25,14 +21,10 @@ class PlaneObject{
 		this.material = new THREE.MeshPhongMaterial({color: 'green'});
 		// メッシュの作成
 		this.cube = new THREE.Mesh(this.geometry, this.material);
-		
+
 		this.cube.position.set(this.x, this.y, this.z);
 		this.cube.castShadow = true;
-	}	
-
-	// setMusic(music){
-	// 	this.music=music;
-	// }
+	}
 
 	setImage(img){
 		this.img= img;
@@ -53,7 +45,7 @@ class PlaneObject{
 	}
 
 	setPosition(x,y,z){
-		this.cube.position.set(x, y, z);  // 位置を設定(x, y, z)	
+		this.cube.position.set(x, y, z);  // 位置を設定(x, y, z)
 	}
 
 }

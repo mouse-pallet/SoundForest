@@ -1,12 +1,15 @@
 //孤立ソース。他に影響はなし
 //再生する/音源やリスナーの位置を変えることができる
 
+
+
 var AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioCtx = new AudioContext();
 var source;
 var request;
 var panner = audioCtx.createPanner()
 var listener = audioCtx.listener;
+var gainNode = audioCtx.createGain();
 
 
 function setPropaty(){
@@ -57,15 +60,20 @@ function getData(music) {
         source.connect(panner);
         panner.connect(audioCtx.destination);
         // positionPanner();
-        source.loop = true;
+        // source.loop = true;
+        source.connect(gainNode);
+   gainNode.connect(audioCtx.destination);
 
     // source.connect(audioCtx.destination);
 
         source.start(0);
         console.log(source);
+        // audioCtx.suspend();
+        // audioCtx.resume();
+        gainNode.gain.value = 0;
+        console.log(gainNode);
 
-        
-        
+
         // fn(buffer);
       },
 
@@ -77,4 +85,18 @@ function getData(music) {
 }
 
 
+// function upgain(){
+//  gainNode.gain.value = 3;
+//     console.log("upgain:" + gainNode);
+// }
+
+// function downgain(){
+//  gainNode.gain.value = 0;
+//     console.log("downgain" + gainNode);
+// }
+
+// function up2gain(){
+//  gainNode.gain.value = 50;
+//     console.log("up2gain" + gainNode);
+// }
 getData("../sounds/sample3.mp3");
