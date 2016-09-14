@@ -5,19 +5,51 @@ head
   style(src="stylesheets/index.css")
   title Document
 body
-  
-  div(id="layer1",width="800",height="600",style="position: absolute; left: 0; top: 0; z-index: 0;")
-  
-  div(id="layer2" width="800" height="600" style="position: absolute; left: 0;top: 0; z-index: 1;")
-  
-  div(id="layer3" width="800" height="600" style="position: absolute; left: 0;top: 0; z-index: 2;")
 
-  div(id="layer4" width="800" height="600" style="position: absolute; left: 10;top: 0; z-index: 2;")
-    h1#ArtistName
-    h1#Title
-    h4#smallDec
-    h2#bigDec
+  div(style="background-color: #000000; height: 100px; width: 100%; left: 0px; top: 0px; margin:0px;" )
+
+  div(style=" height: 14px; width: 100%; left: 0px; top: 0px; margin:0px;" )
+
+  button(id="nextGuide" type="button" name="aaa" value="aaa" style = "height: 30px;" )
+    img(src="images/ageha.png" style = "height: 20px; width: 20px;")
+    p(style = "height: 5px;") Next guide.
+
+  div(style="margin:0px; background-color: #99cc00; height:75%; width: 100%; ")
+    div(id="blank1" style="height: 100px;  float:left;")
+
+    div.three(class="three" style="left: 200px; top: 200px; float:left; padding:10px")
+      div(id="layer1" style="height: 75%; width: 75%; position: absolute; z-index: 0;")
+      
+      div(id="layer2" style="height: 75%; width: 75%; position: absolute; z-index: 1;")
+      
+      div(id="layer3" style="height: 75%; width: 75%; position: absolute; z-index: 2;")
+      
+      div(id="layer4" class= "MusicInformation three" style="height: 75%; width: 25%; position: absolute; z-index: 3;")
+        div(class="information" style="position: relative; left: 10px; width:90%")
+          h1(id="ArtistName")
+          h1(id="Title"  )
+          h6(id="smallDec"  )
+          h2(id="bigDec"  )
+  
+  p(style="clear:left;")
+
+
+
+  div(style="height: 100px; width: 15%;")
+
+
+    
+    
+    
+
+
   
   script(type="text/javascript", src="javascripts/main.js")
+
+  //
+    background-color: #99cc00;
+    width: 140px;
+    background-image: url('images/background.png');
+
 
 

@@ -8,7 +8,7 @@ class InformationObjct{
 		this.title = document.getElementById("Title").appendChild(document.createTextNode(""));
 		this.smallDesc = document.getElementById("smallDec").appendChild(document.createTextNode(""));
 		this.bigDesc = document.getElementById("bigDec").appendChild(document.createTextNode(""));
-		this.canvas.style.color = "rgba(" + [255,255, 255, 0] + ")";
+		this.canvas.style.color = "rgba(" + [0,0,0, 0] + ")";
 	}
 
 	// setInformation(artistName,title,smallDesc,bigDesc,url,img){
@@ -46,6 +46,7 @@ class InformationObjct{
 	translate(alpha){
 		// console.log("alpha:"+alpha);
 		this.canvas.style.color = "rgba(" + [255,255, 255, alpha] + ")";
+		this.canvas.style.backgroundColor = "rgba(" + [0,0, 0, alpha] + ")";
 
 	}
 

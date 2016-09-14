@@ -44,7 +44,7 @@ class Music extends PlaneObject{
             // this.map = this.loader.load( '../../images/starsky.jpg');
             this.map=this.loader.load(this.info.Image);
             // this.material = new THREE.MeshBasicMaterial({map:this.map,transparent: true,opacity : 1,side: THREE.DoubleSide,depthWrite: false});
-            this.material = new THREE.MeshBasicMaterial({map:this.map});
+            this.material = new THREE.MeshBasicMaterial({map:this.map,emissive:'white'});
             // メッシュの作成
             this.musicObject = new THREE.Mesh(this.geometry, this.material);
             this.musicObject.position.set(this.x, this.y, this.z);
@@ -100,21 +100,18 @@ class Music extends PlaneObject{
 
       getDistance(){
             var lx=this.listener.positionX.value;
-            var ly=this.listener.positionY.value;
+            // var ly=this.listener.positionY.value;
             var lz=this.listener.positionZ.value;
             var px=this.panner.positionX.value;
-            var py=this.panner.positionY.value;
+            // var py=this.panner.positionY.value;
             var pz=this.panner.positionZ.value;
-            var distanse=Math.sqrt((lx-px)*(lx-px)+(ly-py)*(ly-py)+(lz-pz)*(lz-pz));
+            var distanse=Math.sqrt((lx-px)*(lx-px)+(lz-pz)*(lz-pz));
             return distanse;
 
       }
 
-
-
-
       manageVolume(){
-            var drate=2;//この値が大きいほど、音の再生許容範囲が大きくなる
+            var drate=1;//この値が大きいほど、音の再生許容範囲が大きくなる
 
             //音源と　リスナーとの距離を知る。
             var distanse = this.getDistance();
@@ -180,6 +177,20 @@ class Music extends PlaneObject{
       	}
 
       	request.send();
+      }
+
+      mouseover(){
+
+        this.musicObject.scale.set(1.2,1.2,1.2);  
+
+
+      }
+
+      mouseout(){
+
+        this.musicObject.scale.set(1/1.2,1/1.2,1/1.2);  
+
+
       }
 
       // play(){

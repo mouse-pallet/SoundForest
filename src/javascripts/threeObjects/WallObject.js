@@ -3,7 +3,7 @@ import PlaneObject from './PlaneObject.js';
 
 class WallObject　extends PlaneObject{
 
-	constructor(posX,posY,posZ,spaceXYZ){
+	constructor(posX,posY,posZ,spaceXYZ,radius){
 		super(posX,posY,posZ,spaceXYZ);
 
 		this.loader = new THREE.TextureLoader();
@@ -20,7 +20,7 @@ class WallObject　extends PlaneObject{
 
 
 	getObject(){
-		this.floor.position.set(0,-30,-20);
+		// this.floor.position.set(0,-this.width,0);
 		return this.floor;
 	}
 }

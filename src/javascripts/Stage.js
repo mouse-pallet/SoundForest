@@ -6,7 +6,9 @@ import FairyObject from './threeObjects/FairyObject.js';
 import ButterflyObject from './threeObjects/ButterflyObject.js';
 import Music from './threeObjects/Music.js';
 import InformationObjct from './threeObjects/InformationObjct.js'
+import musicList from './MusicList.js';
 import * as THREE from 'three';
+import {ModalWindow} from './ModalWindow.js'
 
 var canvas;
 var scene;
@@ -42,16 +44,21 @@ var title;
 var smallDesc;
 var bigDesc;
 
+var pathLength=30;//道幅はpathLengthx2
+
+
+var guide = 0 ;//何番目のオブジェクトを蝶は案内するか
 
 
 export function createStage(){
 
 	
-
+	var fogcolor = 0xFFFAF0;
 	scene = new THREE.Scene();
-	scene.fog = new THREE.FogExp2( 0xcccccc, 0.03 );//奥行きの色をぼけさせる
+	scene.fog = new THREE.FogExp2( fogcolor, 0.03 );//奥行きの色をぼけさせる
 
 	scene2 = new THREE.Scene();
+	scene2.fog = new THREE.FogExp2( fogcolor, 0.005 );//奥行きの色をぼけさせる
 	
 	scene3 = new THREE.Scene();
 	
@@ -60,9 +67,13 @@ export function createStage(){
 	// fov: 画角(視野角)
 	var fov = 75;
 
-	height = 600; // 縦幅
-	width = 800; // 横幅
-	depth=600;
+	// height = 600; // 縦幅
+	// width = 800; // 横幅
+	// depth=600;
+
+	height = window.innerHeight*0.75;
+	width = window.innerWidth*0.75;
+	depth = width;
 	// aspect: アスペクト比、カメラで撮影したものの縦横比
 	// aspect = height/width;
 	aspect = width/height;
@@ -70,13 +81,12 @@ export function createStage(){
 	// near： ニアークリップ、 カメラからの撮影開始位置、これより近いものは撮影しない
 	var near = 1;
 	// far: ファークリップ カメラからの撮影終了位置、これより遠いものは撮影しない
-	var far = 1200;
+	var far = 2500;
 
 	// カメラ作成
 	camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 	//カメラ配置
 	camera.position.set(0, 0, 100); // (x, y, z)
-	console.log(camera.position);
 
 
 	canvas = document.getElementById('layer1'); // div要素の取得
@@ -119,6 +129,7 @@ export function createStage(){
 
 	scene.add( new THREE.AmbientLight(0xaaaaaa) );
 	
+	console.log("musicList:" + musicList[0].artistName);
 
 
 
@@ -133,7 +144,7 @@ export function createStage(){
 	for(var i=0;i<treeNum/2;i++){//道の左右に木を配置　１ループで左右に一本ずつ
 
 
-		var treeRX = Math.floor(30+Math.random() * width/2);
+		var treeRX = Math.floor(pathLength + Math.random() * width/2);
 		var treeRY = 10;
 		var treeRZ = Math.floor( Math.random() * depth - depth/2);
 		var treeRrad = Math.random() * Math.PI;
@@ -144,7 +155,7 @@ export function createStage(){
 		groupgeometry.mergeMesh(meshItem);
 
 		// var treeLX = Math.floor(Math.random() * width - width/2);
-		var treeLX = Math.floor(-30-Math.random() * width/2);
+		var treeLX = Math.floor(-(pathLength)-Math.random() * width/2);
 		var treeLY = 10;
 		var treeLZ = Math.floor( Math.random() * depth - depth/2);
 		var treeLrad = Math.random() * Math.PI;
@@ -165,29 +176,16 @@ export function createStage(){
 
 
 	var spaceXYZ=[width,height,depth];//今後オブジェクト生成に使う空間のベクトル
-	musicObjects.push(new Music(-80,0,-50,"../sounds/Aimer/darekaumiwo.mp3",spaceXYZ));
-	// setInformation(artistName,title,smallDesc,bigDesc,url,img);
-	musicObjects[0].setInformation("Aimer","誰か、海を","smallhoge","bighoge","https://www.amazon.co.jp/%E8%AA%B0%E3%81%8B%E3%80%81%E6%B5%B7%E3%82%92%E3%80%82EP-Aimer/dp/B00LL7N5X0/ref=sr_1_1?ie=UTF8&qid=1473739590&sr=8-1&keywords=%E8%AA%B0%E3%81%8B+%E6%B5%B7%E3%82%92",'https://images-na.ssl-images-amazon.com/images/I/51Q7vL967kL.jpg')
-	musicObjects[0].setlistererPos(camera.position.x,camera.position.y,camera.position.z);
-	musicObjects[0].name = musicObjects[0].getInformation().Title;;
-	scene.add(musicObjects[0].setObject()); // シーンに追加
-	scene.add(musicObjects[0].getLight());//オブジェクト事態を光らせるライト
-	rayReceiveObjects.push(musicObjects[0]);//クリック判定に使用
-	musicDistance.push(0);//距離の初期値
 
-
-
-
-	musicObjects.push(new Music(0,0,0,"../sounds/sample3.mp3",spaceXYZ));
-	// setInformation(artistName,title,smallDesc,bigDesc,url,img);
-	musicObjects[1].setInformation("Hoge","Sample3","smallhoge","bighoge","https://www.amazon.co.jp/%E3%82%A2%E3%82%A4%E3%82%BD%E3%83%88%E3%83%8B%E3%83%83%E3%82%AF%E3%83%BB%E3%82%B5%E3%82%A6%E3%83%B3%E3%83%89-Forest%E2%80%BE%E6%A3%AE-%E5%85%89%E6%B0%B7%E6%AB%93/dp/B00005F1O2/ref=sr_1_3?ie=UTF8&qid=1473738055&sr=8-3&keywords=%E3%80%80%E6%A3%AE%E3%80%80%E3%83%92%E3%83%BC%E3%83%AA%E3%83%B3%E3%82%B0",'https://images-na.ssl-images-amazon.com/images/I/51FJYQN64VL.jpg')
-	musicObjects[1].setlistererPos(camera.position.x,camera.position.y,camera.position.z);
-	musicObjects[1].createObject();
-	scene.add(musicObjects[1].setObject()); // シーンに追加
-	scene.add(musicObjects[1].getLight());//オブジェクト事態を光らせるライト
-	rayReceiveObjects.push(musicObjects[1]);//クリック判定に使用
-	musicDistance.push(1);//距離の初期値
-
+	for(var i=0;i<musicList.length;i++){
+		musicObjects.push(new Music(musicList[i].x,0,musicList[i].z,musicList[i].music,spaceXYZ));
+		musicObjects[i].setInformation(musicList[i].artistName,musicList[i].title,musicList[i].smallDesc,musicList[i].bigDesc,musicList[i].url,musicList[i].img);
+		musicObjects[i].setlistererPos(camera.position.x,camera.position.y,camera.position.z);
+		scene.add(musicObjects[i].setObject()); // シーンに追加
+		scene.add(musicObjects[i].getLight());//オブジェクト事態を光らせるライト
+		rayReceiveObjects.push(musicObjects[i]);//クリック判定に使用
+		musicDistance.push(i);//距離の初期値
+	}
 
 
     //床オブジェクト
@@ -207,9 +205,11 @@ export function createStage(){
 	// scene3.add(fairyobject.getObject()); // シーンに追加
 	//妖精オブジェクト
 	butterflyobject = new ButterflyObject();
-	butterflyobject.setPositionXZ(camera.position.x,camera.position.z,musicObjects[0].x,musicObjects[0].z);
+	butterflyobject.setPositionXZ(camera.position.x,camera.position.z,musicObjects[guide].x,musicObjects[guide].z);
 	scene3.add(butterflyobject.getObject()); // シーンに追加
 	// butterflyobject.wingL.visible = false;//オブジェクト非表示テスト
+
+
 }
 //
 
@@ -236,38 +236,83 @@ export function render() {
 
 export function cameraMove(x,y,z){
 
-	var stopLine=70;
 
-	if((-width/2+stopLine<camera.position.x && x<=0) ||(camera.position.x<width/2-stopLine && x>0)){
-		camera.position.x+=x;
+	//＊＊＊＊＊＊＊＊＊＊カメラの方向にあわせた操作＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+	//回転軸
+	var axis = new THREE.Vector3(0,1,0).normalize();
+
+	//視点を動かす
+	var lookDirection = new THREE.Vector3();
+	// var cameramove = new THREE.Vector3(x,y,z);
+	var moveVect = new THREE.Vector3();
+	// moveVect.copy(cameramove);
+
+
+	camera.getWorldDirection(lookDirection);//カメラのみている方向
+	moveVect.copy(lookDirection);
+
+	//操作にあわせてベクトルか移転
+	if(x<0){//left
+		moveVect.applyAxisAngle(axis, Math.PI/2);
+	}
+	if(x>0){//right
+		moveVect.applyAxisAngle(axis, -Math.PI/2);
+	}
+	if(z>0){//back
+		moveVect.applyAxisAngle(axis, Math.PI);
 	}
 
-	if((-depth/2+stopLine<camera.position.z && z<=0) ||(camera.position.z<depth/2-stopLine && z>0)){
-		camera.position.z+=z;
+	
+
+	moveVect.normalize();
+	
+	
+
+
+	//＊＊＊＊＊＊＊カメラの移動範囲の制限＊＊＊＊＊＊＊＊＊＊＊＊＊＊
+
+	var stopLine=120;
+
+
+	//道の恥じっこにいったら(butterfly guides you の画像を提示)
+	if((-pathLength<camera.position.x && camera.position.x<pathLength) && (camera.position.z-1<-depth/2+stopLine || camera.position.z+1>depth/2-stopLine)){
+		console.log("Modal");
+		ModalWindow("images/keyboadInput.jpg");
 	}
 
-	butterflyobject.setPositionXZ(camera.position.x,camera.position.z,musicObjects[0].x,musicObjects[0].z);
+	//恥じっこに行けば、それ以上進めなくなるようにする
+	if((-width/2+stopLine<camera.position.x && moveVect.x<0) ||(camera.position.x<width/2-stopLine && moveVect.x>0)){
+		// camera.position.x+=x;
+		camera.position.x+=moveVect.x;
+	}
+
+	if((-depth/2+stopLine<camera.position.z && moveVect.z<0) ||(camera.position.z<depth/2-stopLine && moveVect.z>0)){
+		camera.position.z+=moveVect.z;
+	}
+
+	//＊＊＊＊＊＊＊蝶のガイドを調整する＊＊＊＊＊＊＊＊＊＊＊＊＊
+
+	console.log("guide["+guide+"] distant:" + musicObjects[guide].getDistance());
 
 
-
+	//蝶の位置をセットし直してる。
+	butterflyobject.setPositionXZ(camera.position.x,camera.position.z,musicObjects[guide].x,musicObjects[guide].z);
 
 	for(var i=0;i<musicObjects.length;i++){
 		musicObjects[i].setlistererPos(camera.position.x,camera.position.y,camera.position.z);
 		musicDistance[i]=musicObjects[i].getDistance();
-		// console.log(musicDistance.indexOf(Math.min.apply(null,musicDistance)));//最小値を求める
+		
 	}
 
 	var min=musicDistance.indexOf(Math.min.apply(null,musicDistance));
 	InfoObj.writeInformation(musicObjects[min].getInformation());
-	var drate=3;//この値が大きいほど、音の再生許容範囲が大きくなる(Music.jsにも同様の変数あり)
+	var drate=1;//この値が大きいほど、情報の提示許容範囲が大きくなる(Music.jsにも同様の変数あり)
 	if(musicDistance[min]<0.1*drate){
-		InfoObj.translate(3*Math.log10(2-(musicDistance[min]/drate)*15));
+		InfoObj.translate(0.2+3*Math.log10(2-(musicDistance[min]/drate)*15));
 	}
 
 	
-	var objPos = new THREE.Vector3(musicObjects[0].x,musicObjects[0].y,musicObjects[0].z);
-	// console.log(musicObjects[0]);
-	// console.log(camera.position);
+	var objPos = new THREE.Vector3(musicObjects[guide].x,musicObjects[guide].y,musicObjects[guide].z);
 	butterflyobject.setRotation(objPos,camera.position);
 
 }
@@ -297,13 +342,80 @@ export function clickPosition(event){
 	for(var i =0; i < intersects.length;i++){
 		for(var j =0; j < musicObjects.length;j++)
 		if(musicObjects[j].getObject()==intersects[i].object){
-			console.log("click["+j+"]:"+musicObjects[j].getInformation().URL);
+			// console.log("click["+j+"]:"+musicObjects[j].getInformation().URL);
 			window.open(musicObjects[j].getInformation().URL,'_blank');
 		}
 	}
 	 
 
 
+}
+
+export function mouseoverPosition(event){
+
+		// 画面上のマウスクリック位置
+	var x = event.clientX;
+	var y = event.clientY;
+	 
+	// マウスクリック位置を正規化
+	var mouse = new THREE.Vector2();
+	mouse.x =  ( x / window.innerWidth ) * 2 - 1;
+	mouse.y = -( y / window.innerHeight ) * 2 + 1;
+	 
+	// Raycasterインスタンス作成
+	var raycaster = new THREE.Raycaster();
+	// 取得したX、Y座標でrayの位置を更新
+	raycaster.setFromCamera( mouse, camera );
+	// オブジェクトの取得
+	var intersects = raycaster.intersectObjects( scene.children );
+	for(var i =0; i < intersects.length;i++){
+		for(var j =0; j < musicObjects.length;j++){
+			console.log("mouseover:" + intersects[i].object);
+			if(musicObjects[j].getObject()==intersects[i].object){
+				musicObjects[j].mouseover();
+				console.log("mouseover:"+j);
+			}else{
+					musicObjects[j].mouseout();
+			}
+		}
+	}
+}
+
+
+export function mouseoutPosition(event){
+	// console.log("mouseout");
+	// 	// 画面上のマウスクリック位置
+	// var x = event.clientX;
+	// var y = event.clientY;
+	 
+	// // マウスクリック位置を正規化
+	// var mouse = new THREE.Vector2();
+	// mouse.x =  ( x / window.innerWidth ) * 2 - 1;
+	// mouse.y = -( y / window.innerHeight ) * 2 + 1;
+	 
+	// // Raycasterインスタンス作成
+	// var raycaster = new THREE.Raycaster();
+	// // 取得したX、Y座標でrayの位置を更新
+	// raycaster.setFromCamera( mouse, camera );
+	// // オブジェクトの取得
+	// var intersects = raycaster.intersectObjects( scene.children );
+	// for(var i =0; i < intersects.length;i++){
+	// 	for(var j =0; j < musicObjects.length;j++){
+	// 		if(musicObjects[j].getObject()==intersects[i].object){
+	// 			musicObjects[j].mouseout();
+	// 			console.log("mouseout:"+j);
+	// 		}else{
+	// 			musicObjects[j].mouseout();
+	// 		}
+	// 	}
+	// }
+}
+
+export function arrive(){//到着判定
+	console.log("guide distant:" + musicObjects[guide].getDistance());
+	if(guide< musicObjects.length){
+		guide++;
+	}
 }
 
 // export default Music;
