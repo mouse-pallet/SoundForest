@@ -111,7 +111,7 @@ class Music extends PlaneObject{
       }
 
       manageVolume(){
-            var drate=1;//この値が大きいほど、音の再生許容範囲が大きくなる
+            var drate=0.8;//この値が大きいほど、音の再生許容範囲が大きくなる
 
             //音源と　リスナーとの距離を知る。
             var distanse = this.getDistance();
@@ -188,21 +188,11 @@ class Music extends PlaneObject{
 
       mouseout(){
 
-        this.musicObject.scale.set(1/1.2,1/1.2,1/1.2);  
+        this.musicObject.scale.set(0.8,0.8,0.8);  
 
 
       }
 
-      // play(){
-      // 	// this.source.start(0);
-      //   this.source.start(0);
-      //   this.flag=1;
-      // }
-
-      // stop(){
-      // 	this.source.stop(0);
-      //   this.flag=0;
-      // }
 
 }
 

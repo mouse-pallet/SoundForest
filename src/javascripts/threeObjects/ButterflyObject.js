@@ -139,6 +139,11 @@ class ButterflyObject{
 
 		// ２つのベクトルのなす角度
 		var angle = pobjVec.angleTo(lisobjVec);
+
+
+
+
+
 		
 		if(objPos.x>lisPos.x){
 			this.butterfly.rotation.y = angle;
@@ -147,6 +152,19 @@ class ButterflyObject{
 			this.butterfly.rotation.y = -angle;
 			// console.log("angle:"+(-angle*180/(Math.PI)));
 		}
+
+
+		// var quat = new THREE.Quaternion();
+ 
+		// // ベクトル(1,1,1) を回転軸とする (※正規化も実施)
+		// var axis = new THREE.Vector3(0,1,0).normalize();
+
+		 
+		// // 回転軸axis と角度angle からクォータニオンを計算
+		// quat.setFromAxisAngle(axis,angle);
+		 
+		// // メッシュを回転させる
+		// this.butterfly.quaternion.multiply(quat);
 
 	}
 

@@ -49,6 +49,10 @@ var pathLength=30;//道幅はpathLengthx2
 
 var guide = 0 ;//何番目のオブジェクトを蝶は案内するか
 
+var modalfalg=0;//ゴール地点のモーダル表示ポジションの到着判定
+
+
+
 
 export function createStage(){
 
@@ -86,7 +90,7 @@ export function createStage(){
 	// カメラ作成
 	camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
 	//カメラ配置
-	camera.position.set(0, 0, 100); // (x, y, z)
+	camera.position.set(0, 0, 300); // (x, y, z)
 
 
 	canvas = document.getElementById('layer1'); // div要素の取得
@@ -222,6 +226,7 @@ export function render() {
   for(var i=0;i<musicObjects.length;i++){
  	musicObjects[i].rollingObject();
   }	
+  raycaster.setFromCamera( mouse, camera );//マウスポジションの更新
   // scene.remove(pointObj);
   // pointObj=musicObjects[0].analyzeSound();
   // scene.add(pointObj);
@@ -275,9 +280,15 @@ export function cameraMove(x,y,z){
 
 
 	//道の恥じっこにいったら(butterfly guides you の画像を提示)
-	if((-pathLength<camera.position.x && camera.position.x<pathLength) && (camera.position.z-1<-depth/2+stopLine || camera.position.z+1>depth/2-stopLine)){
-		console.log("Modal");
-		ModalWindow("images/keyboadInput.jpg");
+	if(((-pathLength<camera.position.x && camera.position.x<pathLength) 
+		&& (camera.position.z<-depth/2+stopLine || camera.position.z>depth/2-stopLine))){
+		if(modalfalg == 0){
+			console.log("Modal");
+			ModalWindow("images/keyboadInput.jpg");
+			modalfalg = 1;
+		}
+	}else{
+		modalfalg = 0;
 	}
 
 	//恥じっこに行けば、それ以上進めなくなるようにする
@@ -292,7 +303,7 @@ export function cameraMove(x,y,z){
 
 	//＊＊＊＊＊＊＊蝶のガイドを調整する＊＊＊＊＊＊＊＊＊＊＊＊＊
 
-	console.log("guide["+guide+"] distant:" + musicObjects[guide].getDistance());
+	// console.log("guide["+guide+"] distant:" + musicObjects[guide].getDistance());
 
 
 	//蝶の位置をセットし直してる。
@@ -334,9 +345,9 @@ export function clickPosition(event){
 	mouse.y = -( y / window.innerHeight ) * 2 + 1;
 	 
 	// Raycasterインスタンス作成
-	var raycaster = new THREE.Raycaster();
+	// var raycaster = new THREE.Raycaster();
 	// 取得したX、Y座標でrayの位置を更新
-	raycaster.setFromCamera( mouse, camera );
+	// raycaster.setFromCamera( mouse, camera );
 	// オブジェクトの取得
 	var intersects = raycaster.intersectObjects( scene.children );
 	for(var i =0; i < intersects.length;i++){
@@ -353,32 +364,57 @@ export function clickPosition(event){
 
 export function mouseoverPosition(event){
 
+	event.preventDefault();
+
 		// 画面上のマウスクリック位置
 	var x = event.clientX;
 	var y = event.clientY;
 	 
 	// マウスクリック位置を正規化
-	var mouse = new THREE.Vector2();
-	mouse.x =  ( x / window.innerWidth ) * 2 - 1;
-	mouse.y = -( y / window.innerHeight ) * 2 + 1;
+	var mouse = new THREE.Vector2(), INTERSECTED;
+	mouse.x =  ( x / width ) * 2 - 1;
+	mouse.y = -( y / height ) * 2 + 1;
 	 
-	// Raycasterインスタンス作成
-	var raycaster = new THREE.Raycaster();
 	// 取得したX、Y座標でrayの位置を更新
-	raycaster.setFromCamera( mouse, camera );
+	// raycaster.setFromCamera( mouse, camera );
 	// オブジェクトの取得
 	var intersects = raycaster.intersectObjects( scene.children );
-	for(var i =0; i < intersects.length;i++){
-		for(var j =0; j < musicObjects.length;j++){
-			console.log("mouseover:" + intersects[i].object);
-			if(musicObjects[j].getObject()==intersects[i].object){
-				musicObjects[j].mouseover();
-				console.log("mouseover:"+j);
-			}else{
-					musicObjects[j].mouseout();
-			}
+	// for(var i =0; i < intersects.length;i++){
+	console.log("intersects", intersects);
+	for(var j =0; j < musicObjects.length;j++){
+		// console.log("mouseover:" + intersects[i].object);
+		const musicObject = musicObjects[j].getObject();
+		console.log('musicObject', musicObject);
+		const filtered = intersects.filter(function(intersect) {
+          return musicObject === intersect.object;
+		});
+		if(filtered.length>0){
+			musicObjects[j].mouseover();
+			console.log("mouseover:"+j);
+		}else{
+			console.log("mouseout:"+j);
+			musicObjects[j].mouseout();
 		}
 	}
+	// }
+
+
+
+
+
+
+
+	// if ( intersects.length > 0 ) {
+	// 	if ( INTERSECTED != intersects[ 0 ].object ) {
+	// 		if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+	// 		INTERSECTED = intersects[ 0 ].object;
+	// 		// INTERSECTED.currentHex = INTERSECTED.material.emissive.getHex();
+	// 		// INTERSECTED.material.emissive.setHex( 0xff0000 );
+	// 		}
+	// } else {
+	// 	if ( INTERSECTED ) INTERSECTED.material.emissive.setHex( INTERSECTED.currentHex );
+	// 	INTERSECTED = null;
+	// }
 }
 
 

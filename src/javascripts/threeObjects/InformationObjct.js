@@ -48,6 +48,8 @@ class InformationObjct{
 		this.canvas.style.color = "rgba(" + [255,255, 255, alpha] + ")";
 		this.canvas.style.backgroundColor = "rgba(" + [0,0, 0, alpha] + ")";
 
+		console.log("layer4:",this.canvas);
+
 	}
 
 
