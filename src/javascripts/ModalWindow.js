@@ -1,9 +1,20 @@
 import $ from "jquery";
 
-export function ModalWindow(url){
+var images=[];
+var cnt;
+
+export function ModalWindow(imgArray){
+
+    for(var i=0; i<imgArray.length;i++){
+        images.push(imgArray[i]);
+        console.log("images",images[i]);
+    }
+
+    cnt=0;//メソッドが呼ばれるたびに初期化
+
 	console.log("modal");
       console.log($("body"));
-      	$("body").append('<img id="modal-main" src='+url+'></img>');
+      	$("body").append('<img id="modal-main" src='+images[0]+'></img>');
         // $("body").append('<div id="modal-main"></div>');
         $("body").append('<div id="modal-bg"></div>');
         // $("#modal-main").append('<img id="modal-img" src="images/keyboadInput.jpg"></img>');
@@ -35,17 +46,34 @@ export function ModalWindow(url){
     modalResize();
  
     //モーダルウィンドウを表示
-        $("#modal-bg,#modal-main").fadeIn("slow");
+    $("#modal-bg,#modal-main").fadeIn("slow");
+
+        
  
     //画面のどこかをクリックしたらモーダルを閉じる
-        $("#modal-bg,#modal-main").click(function(){
+    $("#modal-bg,#modal-main").click(function(){
+        if(cnt==imgArray.length-1){
             $("#modal-main,#modal-bg").fadeOut("slow",function(){
           //挿入した<div id="modal-bg"></div>を削除
                 $('#modal-bg').remove() ;
                 $('#modal-main').remove() ;
             });
- 
-        });
+        }else{
+            //画像を変える
+            // console.log("modal",document.getElementById("modal-main").src);
+            //画像番号を進める
+            if(cnt<imgArray.length-1){cnt++;}
+            $("#modal-main").fadeOut("slow",function(){
+                document.getElementById("modal-main").src=images[cnt];
+                $("#modal-main").fadeIn("slow");
+            });
+              
+            //画像を切り替える
+            
+        }
+
+    });
+        
  
     //画面の左上からmodal-mainの横幅・高さを引き、その値を2で割ると画面中央の位置が計算できます
         $(window).resize(modalResize);

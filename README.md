@@ -30,4 +30,4 @@ $ gulp build
 ```
 =======
 # SoundObjectTest
->>>>>>> origin/master
+森の中を歩きながら、音楽家の世界を楽しむサイト

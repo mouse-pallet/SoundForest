@@ -60,7 +60,7 @@ $('#nextGuide').click(function(e) {arrive();});
 
 //モーダルウィンドウ
 $(function(){
- 	ModalWindow("images/keyboadInput.jpg");
+ 	ModalWindow(["images/keyboadInput.jpg","images/ageha.png"]);
 
 });
 

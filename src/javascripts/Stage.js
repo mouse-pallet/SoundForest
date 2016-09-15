@@ -8,7 +8,7 @@ import Music from './threeObjects/Music.js';
 import InformationObjct from './threeObjects/InformationObjct.js'
 import musicList from './MusicList.js';
 import * as THREE from 'three';
-import {ModalWindow} from './ModalWindow.js'
+import {ModalWindow,changeIMG} from './ModalWindow.js'
 
 var canvas;
 var scene;
@@ -283,8 +283,7 @@ export function cameraMove(x,y,z){
 	if(((-pathLength<camera.position.x && camera.position.x<pathLength) 
 		&& (camera.position.z<-depth/2+stopLine || camera.position.z>depth/2-stopLine))){
 		if(modalfalg == 0){
-			console.log("Modal");
-			ModalWindow("images/keyboadInput.jpg");
+			ModalWindow(["images/keyboadInput.jpg"]);
 			modalfalg = 1;
 		}
 	}else{
